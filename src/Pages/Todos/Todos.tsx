@@ -37,7 +37,7 @@ const Todos = (props: Props) => {
         </Route>
         <Route exact path={match.path}>
           <h1>Todos</h1>
-          <h3>Please select a topic.</h3>
+          <h3>Please select a todo.</h3>
           <ul>
             {props.todos.allIds.map((todoId) => {
               return (
