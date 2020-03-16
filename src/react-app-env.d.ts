@@ -54,6 +54,12 @@ declare module '*.svg' {
   export default src;
 }
 
+declare interface Window {
+  __PRELOADED_STATE__: any;
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
+  store: any;
+}
+
 declare module '*.module.css' {
   const classes: { readonly [key: string]: string };
   export default classes;
