@@ -8,6 +8,7 @@ declare namespace NodeJS {
     readonly PUBLIC_URL: string;
     readonly RAZZLE_ASSETS_MANIFEST: string;
     readonly RAZZLE_PUBLIC_DIR: string;
+    readonly RAZZLE_CHUNKS_MANIFEST: string;
   }
 }
 

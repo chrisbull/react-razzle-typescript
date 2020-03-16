@@ -1,32 +1,34 @@
+import React, { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import { v4 as UUID } from 'uuid';
-import React, { Component, useState, useCallback } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { Link, useRouteMatch, Switch, Route } from 'react-router-dom';
-import { RootState } from '../../Redux/types';
+
+import { RootState } from '../../store/types';
 import { Todo } from './Todo';
-import { ADD_TODO } from '../../Redux/actionTypes';
+import { ADD_TODO } from './actions';
 
-const mapState = (state: RootState) => ({
-  todos: state.todos,
-});
+// const mapState = (state: RootState) => ({
+//   todos: state.todos,
+// });
 
-const mapDispatch = {
-  createNewTodo: (content: string) => ({ type: ADD_TODO, payload: { content, id: UUID() } }),
-  toggleOn: () => ({ type: 'TOGGLE_IS_ON' }),
-};
+// const mapDispatch = {
+//   createNewTodo: (content: string) => ({ type: ADD_TODO, payload: { content, id: UUID() } }),
+// };
 
-const connector = connect(mapState, mapDispatch);
+// const connector = connect(mapState, mapDispatch);
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+// type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & {};
+// type Props = PropsFromRedux & {};
 
-const Todos = (props: Props) => {
+export const Todos = () => {
   const match = useRouteMatch();
   const [newTodo, setNewTodo] = useState('');
+  const todos = useSelector((state: RootState) => state.todos);
+  const dispatch = useDispatch();
 
   const createNewTodo = useCallback(() => {
-    props.createNewTodo(newTodo);
+    dispatch({ type: ADD_TODO, payload: { content: newTodo, id: UUID() } });
   }, [newTodo]);
 
   return (
@@ -39,7 +41,7 @@ const Todos = (props: Props) => {
           <h1>Todos</h1>
           <h3>Please select a todo.</h3>
           <ul>
-            {props.todos.allIds.map((todoId) => {
+            {todos.allIds.map((todoId) => {
               return (
                 <li key={`todo_${todoId}`}>
                   <Link to={`${match.path}/${todoId}`}>Todo: {todoId}</Link>
@@ -59,5 +61,3 @@ const Todos = (props: Props) => {
     </div>
   );
 };
-
-export default connector(Todos);

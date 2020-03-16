@@ -1,12 +1,13 @@
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
-import express from 'express';
 import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
+import serialize from 'serialize-javascript'; // Safer stringify, prevents XSS attacks
+import express from 'express';
 
 import App from './App';
-import { Provider } from 'react-redux';
-import configureStore from './Redux/store';
-import { RootState } from './Redux/types';
+import { RootState } from './store/types';
+import { configureStore } from './store/configureStore';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const server = express();
@@ -21,12 +22,11 @@ const initialState: RootState = {
       },
     },
   },
-  visibilityFilter: 'incomplete',
 };
 
 function getHtml({ context, location }: { context: { url?: string }; location: string }) {
   const store = configureStore({ initialState });
-  const state = JSON.stringify(store.getState());
+  const state = serialize(store.getState());
   const markup = renderToString(
     <Provider store={store}>
       <StaticRouter context={context} location={location}>

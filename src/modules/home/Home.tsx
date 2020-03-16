@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../Assets/react.svg';
+import logo from '../../assets/react.svg';
 import './Home.scss';
 
 export const Home = () => (

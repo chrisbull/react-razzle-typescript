@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import { Todos } from './modules/todos';
+import { Home } from './modules/home';
+
 import './App.css';
-import { Todos } from './Pages/Todos';
-import { Home } from './Pages/Home';
 
 const App = () => (
   <Switch>

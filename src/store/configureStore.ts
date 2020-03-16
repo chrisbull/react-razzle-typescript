@@ -1,5 +1,8 @@
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+
+import { isDev } from '../config';
 import { rootReducer } from './rootReducer';
 import { RootState } from './types';
 
@@ -8,17 +11,13 @@ interface StorePrams {
   middleware?: any[];
 }
 
-function configureStore({ initialState, middleware = [] }: StorePrams) {
-  const devtools =
-    typeof window !== 'undefined' &&
-    typeof window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === 'function' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionsBlacklist: [] });
-
-  const composeEnhancers = devtools || compose;
+export function configureStore({ initialState, middleware = [] }: StorePrams) {
+  const composeEnhancers = isDev ? composeWithDevTools : compose;
 
   const _store = createStore(
     rootReducer,
     initialState,
+    // @ts-ignore
     composeEnhancers(applyMiddleware(...[thunk].concat(...middleware))),
   );
 
@@ -28,5 +27,3 @@ function configureStore({ initialState, middleware = [] }: StorePrams) {
 
   return _store;
 }
-
-export default configureStore;

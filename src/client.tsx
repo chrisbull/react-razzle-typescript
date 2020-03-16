@@ -1,19 +1,15 @@
-import App from './App';
-import { BrowserRouter, useLocation } from 'react-router-dom';
-import React, { PropsWithChildren } from 'react';
+import 'react-app-polyfill/ie9'; // For IE 9-11 support
+import 'react-app-polyfill/ie11'; // For IE 11 support
+
+import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
-import configureStore from './Redux/store';
-import { RootState } from './Redux/types';
+import { BrowserRouter } from 'react-router-dom';
 
-// temp placehoder for google analytics
-const ga = {
-  send: (config: any[]) => {},
-};
-
-console.log({
-  window,
-});
+import { AnalyticsProvider } from './modules/analytics';
+import { configureStore } from './store/configureStore';
+import { RootState } from './store/types';
+import App from './App';
 
 const store =
   window.store ||
@@ -21,24 +17,12 @@ const store =
     initialState: window.__PRELOADED_STATE__ as RootState,
   });
 
-function usePageViews() {
-  const location = useLocation();
-  React.useEffect(() => {
-    ga.send(['pageview', location.pathname]);
-  }, [location]);
-}
-
-const AnalyticsWrapper = ({ children }: PropsWithChildren<any>) => {
-  usePageViews();
-  return children;
-};
-
 hydrate(
   <BrowserRouter>
     <Provider store={store}>
-      <AnalyticsWrapper>
+      <AnalyticsProvider>
         <App />
-      </AnalyticsWrapper>
+      </AnalyticsProvider>
     </Provider>
   </BrowserRouter>,
   document.getElementById('root'),

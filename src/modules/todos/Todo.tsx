@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { RootState } from '../../Redux/types';
+
+import { RootState } from '../../store/types';
 
 const mapState = (state: RootState) => ({
   todos: state.todos,
